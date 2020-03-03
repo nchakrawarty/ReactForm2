@@ -18,7 +18,8 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Content from './Content';
-import Createform from './Createform';
+import Createform from './CreateForm';
+import GetForms from './GetForms'
 
 
 const lightColor = 'rgba(255, 255, 255, 0.7)';
@@ -40,9 +41,7 @@ const styles = theme => ({
             color: theme.palette.common.white,
         },
     },
-    button: {
-        // borderColor: lightColor,
-    },
+
     root: {
         borderColor: lightColor,
         flexGrow: 1,
@@ -50,7 +49,7 @@ const styles = theme => ({
     },
 });
 
-function Header(props) {
+function ContentHeader(props) {
     const { classes, onDrawerToggle } = props;
     const [value, setValue] = React.useState(0);
     function a11yProps(index) {
@@ -87,7 +86,7 @@ function Header(props) {
 
     return (
         <React.Fragment>
-            <AppBar color="primary" position="sticky" elevation={0}>
+            {/* <AppBar color="primary" position="sticky" elevation={0}>
                 <Toolbar>
                     <Grid container spacing={1} alignItems="center">
                         <Hidden smUp>
@@ -103,18 +102,7 @@ function Header(props) {
                             </Grid>
                         </Hidden>
                         <Grid item xs />
-                        <Grid item>
-                            {/* <Link className={classes.link} href="#" variant="body2">
-                                Go to docs
-              </Link> */}
-                        </Grid>
-                        {/* <Grid item>
-                            <Tooltip title="Alerts • No alerts">
-                                <IconButton color="inherit">
-                                    <NotificationsIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </Grid> */}
+
                         <Grid item>
                             <IconButton color="inherit" className={classes.iconButtonAvatar}>
                                 <Avatar src="/static/images/avatar/1.jpg" alt="Name Avatar" />
@@ -122,36 +110,16 @@ function Header(props) {
                         </Grid>
                     </Grid>
                 </Toolbar>
-            </AppBar>
-            <AppBar
+            </AppBar> */}
+
+            {/* <AppBar
                 component="div"
                 className={classes.secondaryBar}
                 color="primary"
                 position="static"
                 elevation={0}
             >
-                {/* <Toolbar>
-                    <Grid container alignItems="center" spacing={1}>
-                        <Grid item xs>
-                            <Typography color="inherit" variant="h5" component="h1">
-                                Authentication
-              </Typography>
-                        </Grid>
-                        <Grid item>
-                            <Button className={classes.button} variant="outlined" color="inherit" size="small">
-                                Web setup
-              </Button>
-                        </Grid>
-                        <Grid item>
-                            <Tooltip title="Help">
-                                <IconButton color="inherit">
-                                    <HelpIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </Grid>
-                    </Grid>
-                </Toolbar> */}
-            </AppBar>
+            </AppBar> */}
             <AppBar
                 component="div"
                 className={classes.secondaryBar}
@@ -161,37 +129,27 @@ function Header(props) {
             >
                 <Tabs value={value} textColor="inherit" className={classes.root} onChange={handleChange}>
                     <Tab textColor="inherit" label="Question bank" {...a11yProps(0)} />
-                    <Tab textColor="inherit" label="Forms" {...a11yProps(1)} />
-                    <Tab textColor="inherit" label="Create forms" {...a11yProps(2)} />
-                    {/* <Tab textColor="inherit" label="Usage" /> */}
+                    <Tab textColor="inherit" label="Create forms" {...a11yProps(1)} />
+                    <Tab textColor="inherit" label="Forms" {...a11yProps(2)} />
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
                 <Content />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                No Forms
-            </TabPanel>
-            <TabPanel value={value} index={2}>
                 <Createform />
             </TabPanel>
-            {/* <AppBar>
-                <div className={classes.root}>
-                    <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-                        <Tab label="Item One" {...a11yProps(0)} />
-                        <Tab label="Item Two" {...a11yProps(1)} />
-                        <Tab label="Item Three" {...a11yProps(2)} />
-                    </Tabs>
+            <TabPanel value={value} index={2}>
+                <GetForms />
+            </TabPanel>
 
-                </div>
-            </AppBar> */}
         </React.Fragment>
     );
 }
 
-Header.propTypes = {
+ContentHeader.propTypes = {
     classes: PropTypes.object.isRequired,
     onDrawerToggle: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(Header);
+export default withStyles(styles)(ContentHeader);

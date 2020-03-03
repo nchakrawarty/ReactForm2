@@ -1,101 +1,209 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import IconButton from '@material-ui/core/IconButton';
+import CancelIcon from '@material-ui/icons/Cancel';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import Checkbox from '@material-ui/core/Checkbox';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
-import { withStyles } from '@material-ui/core/styles';
-import SearchIcon from '@material-ui/icons/Search';
-import RefreshIcon from '@material-ui/icons/Refresh';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-// import List from '@material-ui/core/List';
-// import ListItem from '@material-ui/core/ListItem';
-// import ListItemIcon from '@material-ui/core/ListItemIcon';
-// import ListItemText from '@material-ui/core/ListItemText';
 
-const styles = theme => ({
-    paper: {
-        maxWidth: 936,
-        margin: 'auto',
-        overflow: 'hidden',
-    },
-    searchBar: {
-        borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
-    },
-    searchInput: {
-        fontSize: theme.typography.fontSize,
-    },
-    block: {
-        display: 'block',
-    },
-    addUser: {
-        marginRight: theme.spacing(1),
-    },
-    createformWrapper: {
-        margin: '40px 16px',
-    },
-    // list: {
-    //     width: 260,
-    //     color: theme.palette.common.white,
-    // },
-    // fullList: {
-    //     width: 'auto',
-    // },
-});
+import Popover from '@material-ui/core/Popover';
+import Typography from '@material-ui/core/Typography';
+import axios from 'axios';
+
+class CreateForm extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            forms: [],
+            Questions: [],
+            checkedQstnList: [],
+
+        }
+        this.handleInputChange = this.handleInputChange.bind(this);
+    }
+    selectedQuest = [];
+    handleInputChange(event, value) {
+        console.log("value:" + event.target.value + " checked: " + event.target.checked);
+
+        //find Question with that id and set checked value to it
+        for (const each of this.state.Questions) {
+            if (each.id == event.target.value) {
+                each.checked = event.target.checked;
+                // this.setState({ checkedQstnList: each })
+                if (each.checked == true) {
+                    this.selectedQuest.push(each);
+                    // this.state.checkedQstnList.push(each)
+                    this.setState({ checkedQstnList: this.selectedQuest })
+                } else {
+                    this.state.checkedQstnList.slice(1)
+                }
+
+                console.log(each.checked, each, this.state.checkedQstnList)
+            }
+            // console.log(this.state.Questions)
+        }
 
 
-function Createform(props) {
-    const { classes } = props;
+        //update student list state
+        // this.setState({ Questions: this.state.Questions });
+    }
+    componentDidMount() {
+        axios.get('http://eletionapp.3m3pfprvaw.ap-south-1.elasticbeanstalk.com/api/questions').then(response => {
+            // this.state.data = response;
+            const data = response.data;
+            this.setState({ Questions: data.reverse() })
+            console.log(response, this.state)
+
+        }).catch(error => {
+            console.log(error)
+        })
+
+        axios.get('http://eletionapp.3m3pfprvaw.ap-south-1.elasticbeanstalk.com/api/forms').then(response => {
+            // this.state.data = response;
+            const data = response.data;
+            this.setState({ forms: data.reverse() })
+            console.log(response, this.state)
+
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+    render() {
+        const { Questions } = this.state
+        const { checkedQstnList } = this.state
+        const mainContainer = {
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gridGap: "10px",
+            margin: "5px"
+        }
+        const form = {
+            padding: "10px",
+            marging: "10px",
+            // minWidth: "400px",
+            // borderRight: "1px solid #000"
+        }
+        const addformbtn = {
+            margin: "15px"
+        }
+        const handleClick = event => {
+            console.log(event.currentTarget);
+            document.getElementById("create_form").style.display = "block";
+        };
+        const addToForm = event => {
+            console.log(this.state.Questions)
+        }
+        const formInput = {
+            ':focus': {
+                outline: "none"
+            },
+            width: "49%",
+            minHeight: "30px",
+            border: "none",
+            // borderBottom: "1px solid #bfbcbc",
+            margin: "2px"
+        }
+        const formInputpurpose = {
+            ':focus': {
+                outline: "none"
+            },
+            width: "98%",
+            minHeight: "30px",
+            border: "none",
+            // borderBottom: "1px solid #bfbcbc",
+            margin: "5px"
+        }
+        const create_form = {
+            display: "none"
+        }
+
+        // const handleClose = () => {
+        //     this.setAnchorEl(null);
+        // };
+        const open = Boolean(this.anchorEl);
+        const id = open ? 'simple-popover' : undefined;
+        return (
+            <div style={mainContainer}>
+                <Paper style={form}>
+                    <AppBar position="static" color="default" elevation={0}>
+                        <Toolbar>
+                            <Grid container spacing={2} alignItems="center">
+                                <Grid item>
+                                    <h3>Select Question</h3>
+                                </Grid>
+                            </Grid>
+                        </Toolbar>
+                    </AppBar>
+                    {/* {Questions.question} */}
+                    {
+                        Questions.length ?
+                            Questions.map((data, index) => <div key={data.id}>
+                                <Checkbox
+                                    // label={data.id + " : " + student.name}
+                                    value={data.id}
+                                    onClick={(event, value) => this.handleInputChange(event, value)}
+                                    checked={data.checked}
+                                // iconStyle={
+                                //     {
+                                //         fill: "#ffb400" //hex color values (yellow)
+                                //     }
+                                // }
+                                />
+                                {index + 1} - {data.question}
+                                {/* <IconButton onClick={(e) => this.deleteItem(data.id)} style={remove} >
+                                    <CancelIcon />
+                                </IconButton> */}
+                            </div>) :
+                            null
+                    }
+                    {/* <Button color="primary" onClick={addToForm} >Add to form</Button> */}
+                </Paper>
+                <Paper style={form}>
+                    <AppBar position="static" color="default" elevation={0}>
+                        <Toolbar>
+                            <Grid container spacing={2} alignItems="center">
+                                <Grid item>
+                                    <Button style={addformbtn} aria-describedby={id} variant="contained" color="primary" onClick={handleClick} >Create Form</Button>
+                                </Grid>
+                            </Grid>
+                        </Toolbar>
+                    </AppBar>
+                    <div id="create_form" style={create_form} >
+                        <span>
+                            <TextField style={formInput} variant="outlined" placeholder="Form Name" />
+                            <TextField style={formInput} variant="outlined" placeholder="Form Type" />
+                            <TextField style={formInputpurpose} variant="outlined" placeholder="Form Purpose" />
+                            {/* onChange={(e) => this.handleChange(e, index)} value={Question} */}
+                        </span>
+                        <span>
+                            {/* {this.state.checkedQstnList} */}
+                            {
+                                checkedQstnList.length ?
+                                    checkedQstnList.map((data, index) =>
+                                        <div key={data.id}>
+                                            <p> {index + 1} - {data.question}</p>
+
+                                            {/* value={data.id}
+                                                onClick={(event, value) => this.handleInputChange(event, value)}
+                                                checked={data.checked} */}
 
 
-    return (
-        <Paper className={classes.paper}>
-            <AppBar className={classes.searchBar} position="static" color="default" elevation={0}>
-                <Toolbar>
-                    <Grid container spacing={2} alignItems="center">
-                        {/* <Grid item>
-                            <SearchIcon className={classes.block} color="inherit" />
-                        </Grid> */}
-                        {/* <Grid item xs>
-                            <TextField
-                                fullWidth
-                                placeholder="Search by email address, phone number, or user UID"
-                                InputProps={{
-                                    disableUnderline: true,
-                                    className: classes.searchInput,
-                                }}
-                            />
-                        </Grid> */}
-                        <Grid item>
-                            {/* <Button variant="contained" color="primary" className={classes.addUser}>
-                                Add Question
-                        </Button> */}
-                            <Button variant="contained" color="primary" className={classes.addUser}>Add Form</Button>
-                            <Tooltip title="Reload">
-                                <IconButton>
-                                    <RefreshIcon className={classes.block} color="inherit" />
-                                </IconButton>
-                            </Tooltip>
-                        </Grid>
-                    </Grid>
-                </Toolbar>
-            </AppBar>
-            <div className={classes.createformWrapper}>
-                <Typography color="textSecondary" align="center">
-                    No Forms added yet!
-        </Typography>
+
+                                        </div>) :
+                                    <p>Select a question</p>
+                            }
+                        </span>
+                        <Button style={addformbtn} variant="contained" color="primary">Create</Button>
+                    </div>
+
+                </Paper>
             </div>
-        </Paper>
-    );
+        )
+    }
+
 }
 
-Createform.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(Createform);
+export default CreateForm;

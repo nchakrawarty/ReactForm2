@@ -5,23 +5,27 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Hidden from '@material-ui/core/Hidden';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
-import Navigator from './Navigator';
-import Content from './Content';
-import Header from './Header';
+import Navigator from './common/Navigator';
+import AppBar from '@material-ui/core/AppBar';
+import Paper from '@material-ui/core/Paper';
+import Toolbar from '@material-ui/core/Toolbar';
+import Grid from '@material-ui/core/Grid';
+// import Content from './Content';
+import Header from './common/Header';
+import './App.css';
 
 function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
             <Link color="inherit" href="https://material-ui.com/">
-                Your Website
-      </Link>{' '}
+                ESG
+    </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
         </Typography>
     );
 }
-
 let theme = createMuiTheme({
     palette: {
         primary: {
@@ -161,16 +165,16 @@ const styles = {
     },
 };
 
-function Question(props) {
+function Setting(props) {
     const { classes } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
-
     return (
         <ThemeProvider theme={theme}>
+            {/* <Header /> */}
             <div className={classes.root}>
                 <CssBaseline />
                 <nav className={classes.drawer}>
@@ -188,11 +192,25 @@ function Question(props) {
                 </nav>
                 <div className={classes.app}>
                     <Header onDrawerToggle={handleDrawerToggle} />
+                    <Paper>
+                        <AppBar position="static" color="default" elevation={0}>
+                            <Toolbar>
+                                <Grid container spacing={2} alignItems="center">
+                                    <Grid item>
+                                        <h2>Setting</h2>
+                                    </Grid>
+                                </Grid>
+                            </Toolbar>
+                        </AppBar>
+
+
+                    </Paper>
                     <main className={classes.main}>
                         {/* <Content /> */}
+                        {/* <h1>Settings</h1> */}
                     </main>
                     <footer className={classes.footer}>
-                        {/* <Copyright /> */}
+                        <Copyright />
                     </footer>
                 </div>
             </div>
@@ -200,8 +218,4 @@ function Question(props) {
     );
 }
 
-Question.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(Question);
+export default withStyles(styles)(Setting);

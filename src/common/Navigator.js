@@ -19,29 +19,19 @@ import TimerIcon from '@material-ui/icons/Timer';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Dashboard from '@material-ui/icons/Dashboard';
 import PhonelinkSetupIcon from '@material-ui/icons/PhonelinkSetup';
+import { Router } from 'react-router-dom';
+import Routes from '../routes';
+import history from '../services/history';
 
 const categories = [
     {
         id: '',
         children: [
-            { id: 'Dashboard', icon: <Dashboard />, active: true },
-            { id: 'Profile', icon: <PeopleIcon /> },
-            // { id: 'Database', icon: <DnsRoundedIcon /> },
-            // { id: 'Storage', icon: <PermMediaOutlinedIcon /> },
-            // { id: 'Hosting', icon: <PublicIcon /> },
-            // { id: 'Functions', icon: <SettingsEthernetIcon /> },
-            // { id: 'ML Kit', icon: <SettingsInputComponentIcon /> },
-            { id: 'Setting', icon: <SettingsIcon /> },
+            { id: 'Dashboard', link: '/', icon: <Dashboard />, active: true },
+            { id: 'Profile', link: 'profile', icon: <PeopleIcon /> },
+            { id: 'Setting', link: 'setting', icon: <SettingsIcon /> },
         ],
     },
-    // {
-    //     id: 'Quality',
-    //     children: [
-    //         { id: 'Analytics', icon: <SettingsIcon /> },
-    //         { id: 'Performance', icon: <TimerIcon /> },
-    //         { id: 'Test Lab', icon: <PhonelinkSetupIcon /> },
-    //     ],
-    // },
 ];
 
 const styles = theme => ({
@@ -109,20 +99,12 @@ function Navigator(props) {
                 </ListItem>
                 {categories.map(({ id, children }) => (
                     <React.Fragment key={id}>
-                        <ListItem className={classes.categoryHeader}>
-                            <ListItemText
-                                classes={{
-                                    primary: classes.categoryHeaderPrimary,
-                                }}
-                            >
-                                {id}
-                            </ListItemText>
-                        </ListItem>
-                        {children.map(({ id: childId, icon, active }) => (
+
+                        {children.map(({ id: childId, icon, active, link }) => (
                             <ListItem
                                 key={childId}
-                                button
-                                className={clsx(classes.item, active && classes.itemActiveItem)}
+                                button component="a" href={link}
+                                className={clsx(classes.item && classes.itemActiveItem)}
                             >
                                 <ListItemIcon className={classes.itemIcon}>{icon}</ListItemIcon>
                                 <ListItemText
@@ -138,6 +120,9 @@ function Navigator(props) {
                         <Divider className={classes.divider} />
                     </React.Fragment>
                 ))}
+
+                {/* <ListItemIcon><Dashboard /><ListItem className={clsx(classes.item && classes.itemActiveItem)}>Dasboard</ListItem> </ListItemIcon> */}
+
             </List>
         </Drawer>
     );

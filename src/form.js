@@ -3,15 +3,12 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import CancelIcon from '@material-ui/icons/Cancel';
 import PropTypes from 'prop-types';
-
-import GetData from './requests/GetData'
-
 import axios from 'axios';
+import GetData from './Requests/GetData'
 
 export default class Form extends React.Component {
     state = {
         Questions: [],
-        // questionType: []
     }
 
     singleQuestion = {
@@ -23,7 +20,7 @@ export default class Form extends React.Component {
 
     options = ["Option 1", "Option 2"];
 
-    
+
 
     addQueston() {
         this.setState({
@@ -46,8 +43,8 @@ export default class Form extends React.Component {
     handleRemove(index) {
         // console.log(ar.splice(index, 1));
         this.state.Questions.splice(index, 1);
-         console.log(this.state.Questions);
-         this.setState({ Questions: this.state.Questions })
+        console.log(this.state.Questions);
+        this.setState({ Questions: this.state.Questions })
     }
 
     handleSubmit(e) {
@@ -55,55 +52,34 @@ export default class Form extends React.Component {
         //     alert("NO")
         // }
         // localStorage.setItem("questionList", JSON.stringify(this.state))
-          for(var i=0; i< this.state.Questions.length; i++) {
-            axios.post(`http://eletionapp.3m3pfprvaw.ap-south-1.elasticbeanstalk.com/api/questions`, 
-            {
-                "question": this.state.Questions[i],
-                "type": "text",
-                "options": [],
-                "userId": ""
-              })
-            .then(res => {
-              console.log(res);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-            // console.log(this.state, "All Questions");
-            this.setState({ Questions: this.state.Questions })
-          }
+        for (var i = 0; i < this.state.Questions.length; i++) {
+            axios.post(`http://electionapp-env.tkapbzqwmf.ap-south-1.elasticbeanstalk.com/api/questions`,
+                {
+                    "question": this.state.Questions[i],
+                    "type": "text",
+                    "options": [],
+                    "userId": ""
+                })
+                .then(res => {
+                    console.log(res);
+                    this.state.Questions.splice(0);
+                    this.setState({ Questions: this.state.Questions })
+                    this.componentDidMount()
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+            console.log(this.state, "All Questions");
+            // this.setState({ Questions: this.state.Questions })
+        }
 
     }
 
     handleClear(e) {
         this.state.Questions.splice(0);
     }
-    componentDidMount() {
-        // fetch("http://eletionapp.3m3pfprvaw.ap-south-1.elasticbeanstalk.com/api/forms")
-        //     .then(res => res.json(console.log(res)))
-        //     .then(
-        //         (result) => {
-        //             this.setState({
-        //                 isLoaded: true,
-        //                 items: result.items
-        //             });
-        //             console.log(this.items)
-        //         },
-        //         // Note: it's important to handle errors here
-        //         // instead of a catch() block so that we don't swallow
-        //         // exceptions from actual bugs in components.
-        //         (error) => {
-        //             this.setState({
-        //                 isLoaded: true,
-        //                 error
-        //             });
-        //         }
-        //     )
-        // this.http.fetch(`http://eletionapp.3m3pfprvaw.ap-south-1.elasticbeanstalk.com/api/forms`).subscribe((res) => {
-        //     console.log(res)
-        //     this.forms = res;
-        //     console.log(res)
-        // })
+    componentDidMount(state, props) {
+        console.log(props, state)
     }
 
 
@@ -118,8 +94,8 @@ export default class Form extends React.Component {
             minWidth: "400px"
         }
         const insideForm = {
-           display: "flex", 
-           alignItems: "center"
+            display: "flex",
+            alignItems: "center"
         }
 
         const formInput = {
@@ -140,17 +116,7 @@ export default class Form extends React.Component {
                         return (
                             <div style={insideForm} key={index} >
                                 <input style={formInput} onChange={(e) => this.handleChange(e, index)} value={Question} />
-                                {/* <select onChange={(e) => this.handleSelectChange(e, index)} name="questionType">
-                                    <option value="text">Text</option>
-                                    <option value="options">Options</option>
-                                </select> */}
-                                {/* { this.state.questionType[index] === "options" &&
-                                    <div>
-                                        {this.options.map((value, i) => {
-                                            <input name="qtype" type="radio" value= {value}/><input type="text" value={}></input> <br></br>
-                                        })}
-                                    </div>
-                                } */}
+
                                 <IconButton onClick={() => this.handleRemove(index)} style={remove} >
                                     <CancelIcon />
                                 </IconButton>
@@ -170,63 +136,7 @@ export default class Form extends React.Component {
         )
     }
 
-    // change = e => {
-    //     // this.props.onChange({ [e.target.name]: e.target.value });
-    //     this.setState({
-    //         [e.target.name]: e.target.value
-    //     });
-    //     console.log(e.target.value)
-    // };
 
-    // onSubmit = e => {
-    //     e.preventDefault();
-    //     // this.props.onSubmit(this.state);
-    //     this.setState({
-    //         firstName: "",
-    //         lastName: "",
-    //         username: "",
-    //         // email: "",
-    //         // password: ""
-    //     });
-    //     // this.props.onChange({
-    //     //     firstName: "",
-    //     //     lastName: "",
-    //     //     username: "",
-    //     //     email: "",
-    //     //     password: ""
-    //     // });
-    //     console.log(e.target.value)
-    // };
-
-    // render() {
-    //     return (
-    //         <form>
-    //             <input
-    //                 name="firstName"
-    //                 placeholder="First name"
-    //                 value={this.state.firstName}
-    //                 onChange={e => this.change(e)}
-    //             />
-    //             <br />
-    //             <input
-    //                 name="lastName"
-    //                 placeholder="Last name"
-    //                 value={this.state.lastName}
-    //                 onChange={e => this.change(e)}
-    //             />
-    //             <br />
-    //             <input
-    //                 name="username"
-    //                 placeholder="Username"
-    //                 value={this.state.username}
-    //                 onChange={e => this.change(e)}
-    //             />
-    //             <br />
-    //             <br />
-    //             <Button onClick={e => this.onSubmit(e)}>Submit</Button>
-    //         </form>
-    //     );
-    // }
 }
 Form.propTypes = {
     classes: PropTypes.object.isRequired,
