@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/ReactForm2/static/css/main.d1b05096.chunk.css",
+    "main.js": "/ReactForm2/static/js/main.4745fbb8.chunk.js",
+    "main.js.map": "/ReactForm2/static/js/main.4745fbb8.chunk.js.map",
+    "runtime-main.js": "/ReactForm2/static/js/runtime-main.0293189a.js",
+    "runtime-main.js.map": "/ReactForm2/static/js/runtime-main.0293189a.js.map",
+    "static/js/2.1f7f4939.chunk.js": "/ReactForm2/static/js/2.1f7f4939.chunk.js",
+    "static/js/2.1f7f4939.chunk.js.map": "/ReactForm2/static/js/2.1f7f4939.chunk.js.map",
+    "index.html": "/ReactForm2/index.html",
+    "precache-manifest.c3ab2ef3b7b91b7cbad733ddbf1ac771.js": "/ReactForm2/precache-manifest.c3ab2ef3b7b91b7cbad733ddbf1ac771.js",
+    "service-worker.js": "/ReactForm2/service-worker.js",
+    "static/css/main.d1b05096.chunk.css.map": "/ReactForm2/static/css/main.d1b05096.chunk.css.map",
+    "static/js/2.1f7f4939.chunk.js.LICENSE.txt": "/ReactForm2/static/js/2.1f7f4939.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.0293189a.js",
+    "static/js/2.1f7f4939.chunk.js",
+    "static/css/main.d1b05096.chunk.css",
+    "static/js/main.4745fbb8.chunk.js"
+  ]
+}
